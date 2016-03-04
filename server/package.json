@@ -1,0 +1,31 @@
+{
+  "name": "simpli-hapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dcnr": "docker-compose run simpli-hapi npm run",
+    "lint": "eslint --quiet . --fix",
+    "start": "node server.js",
+    "start-dc": "docker-compose run simpli-hapi",
+    "watch": "scripts/watch.sh"
+  },
+  "author": "Gangstead <gangstead@vin.li>",
+  "license": "proprietary",
+  "private": true,
+  "dependencies": {
+    "blipp": "^2.1.3",
+    "bluebird": "^3.3.1",
+    "boom": "^3.0.0",
+    "hapi": "^13.0.0",
+    "hapi-crud-promise": "^0.4.0",
+    "hoek": "^3.0.4",
+    "joi": "^8.0.4",
+    "lodash": "^4.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^2.1.0",
+    "eslint-config-vinli": "^5.0.0",
+    "eslint-plugin-mocha": "^2.0.0"
+  }
+}

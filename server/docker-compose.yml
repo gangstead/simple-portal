@@ -1,0 +1,13 @@
+simpli-hapi:
+  image: vinli/nodejs:4
+  command: npm start
+  volumes:
+    - ./:/app
+  working_dir: /app
+  ports:
+    - "3000:3000"
+  links:
+    - db
+  environment:
+    PORT: 3000
+    NODE_ENV: development
