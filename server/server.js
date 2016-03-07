@@ -28,7 +28,12 @@ const init = () => {
       },
       crudReadAll() {
         return [{ somedata: 'something' }];
-      }
+      },
+      crudCreate() {
+        return {
+          firstName: Joi.string().required(),
+       };
+      },
     });
   })
   .then(() => server.register(require('blipp')))
