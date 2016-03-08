@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
 
-  this.resource('things', {path: 'localhost:3000/api/things'}, function() {
+  this.resource('things', {path: '/things'}, function() {
     this.resource('thing', {path: '/:thing_id'});
   });
 
