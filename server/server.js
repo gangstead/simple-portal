@@ -1,9 +1,11 @@
 'use strict';
 
+const _ = require('lodash');
 const B = require('bluebird');
 const Hapi = require('hapi');
 const hapiCrudPromise = require('hapi-crud-promise');
 const Joi = require('joi');
+const uuid = require('node-uuid').v4;
 
 const port = process.env.PORT || /* istanbul ignore next*/ '3000';
 const server = new Hapi.Server();
@@ -13,27 +15,33 @@ server.connection({ port: parseInt(port) });
 const init = () => {
   return B.resolve()
   .then(() => {
+    const memoryDb = [{
+      id: '123',
+      firstName: 'Steven'
+    }];
+    const find = (id) => _.find(memoryDb, (t) => t.id === id);
+
     return hapiCrudPromise(server, {
       path: '/api/things/{thingId}',
       config: {
         auth: false,
         validate: {
           params: {
-            thingId: Joi.string().guid().required()
+            thingId: Joi.string().required()
           }
         }
       },
-      crudRead() {
-        return { somedata: 'something' };
+      crudRead(req) {
+        return { thing: find(req.params.thingId) };
       },
       crudReadAll() {
-        return [{ somedata: 'something' }];
+        return { things: memoryDb };
       },
-      crudCreate() {
-        return {
-          firstName: Joi.string().required(),
-       };
-      },
+      crudCreate(req) {
+        const newThing = _.merge({ id: uuid() }, req.payload.thing);
+        memoryDb.push(newThing);
+        return { thing: newThing };
+      }
     });
   })
   .then(() => server.register(require('blipp')))
