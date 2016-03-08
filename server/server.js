@@ -19,7 +19,6 @@ const init = () => {
       id: '123',
       firstName: 'Steven'
     }];
-    const find = (id) => _.find(memoryDb, (t) => t.id === id);
 
     return hapiCrudPromise(server, {
       path: '/api/things/{thingId}',
@@ -28,11 +27,14 @@ const init = () => {
         validate: {
           params: {
             thingId: Joi.string().required()
+          },
+          payload: {
+            thing: Joi.object()
           }
         }
       },
       crudRead(req) {
-        return { thing: find(req.params.thingId) };
+        return { thing: _.find(memoryDb, (t) => t.id === req.params.thingId) };
       },
       crudReadAll() {
         return { things: memoryDb };
@@ -41,6 +43,13 @@ const init = () => {
         const newThing = _.merge({ id: uuid() }, req.payload.thing);
         memoryDb.push(newThing);
         return { thing: newThing };
+      },
+      crudDelete(req) {
+        const deleteIndex = _.findIndex(memoryDb, { id: req.params.thingId });
+        if (deleteIndex > -1) {
+          return memoryDb.splice(deleteIndex, 1);
+        }
+        return null;
       }
     });
   })
