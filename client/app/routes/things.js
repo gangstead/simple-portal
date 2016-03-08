@@ -4,8 +4,8 @@ const { attr } = DS;
 
 export default Ember.Route.extend({
 
-  // model: function() {
-  //   return this.store.findAll('thing');
-  // }
+  model: function() {
+    return this.store.findAll('thing');
+  }
 
 });

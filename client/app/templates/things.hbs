@@ -6,3 +6,8 @@
   <button type="submit" name="button">Submit</button>
 
 </form>
+
+  {{#each model as |thing|}}
+    <li>{{thing.firstName}}</li>
+    <button type="button" name="button" {{action 'deleteThing' this}}>Delete</button>
+  {{/each}}

@@ -12,6 +12,12 @@ export default Ember.Controller.extend({
       let newThing = this.store.createRecord('thing', {firstName: firstName});
       this.set('firstName', '');
       newThing.save();
+    },
+    deleteThing() {
+      this.store.findRecord('thing').then(function(thing) {
+        thing.destroyRecord();
+        thing.get('isDeleted'); // => true
+      });
     }
   }
 });

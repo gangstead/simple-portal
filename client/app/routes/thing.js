@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
 
   model: function(params) {
-    return this.store.find('thing', params.thing_id);
+    return this.store.findRecord('thing', params.thing_id);
   }
 
 });
