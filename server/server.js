@@ -1,7 +1,6 @@
 'use strict';
 
 const _ = require('lodash');
-const B = require('bluebird');
 const Hapi = require('hapi');
 const hapiCrudPromise = require('hapi-crud-promise');
 const Joi = require('joi');
@@ -13,7 +12,7 @@ const server = new Hapi.Server();
 server.connection({ port: parseInt(port) });
 
 const init = () => {
-  return B.resolve()
+  return new Promise((res) => res())
   .then(() => {
     const memoryDb = [{
       id: '123',
@@ -55,15 +54,8 @@ const init = () => {
   })
   .then(() => server.register(require('blipp')))
   .then(() => server.start())
-  .then(() => {
-    server.log([ 'info', 'init' ],
-      `Server (${server.settings.app.name} v.${server.settings.app.version}) running.`);
-    return server;
-  });
+  .then(() => console.log('Server running.'))
+  .catch((err) => console.log(`Error during startup: ${err}`));
 };
 
-setTimeout(() => {
-  init().catch((err) => {
-    server.log([ 'error', 'init' ], `Error during startup: ${err}`);
-  }).done();
-}, 1);
+init();
